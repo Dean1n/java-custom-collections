@@ -1,26 +1,48 @@
 # Custom Java Collections
 
-An educational Java project with custom implementations of basic list data structures.
+An educational Java project with custom implementations of basic collection data structures.
 
-## Overview
+## Implemented Collections
 
-This project was created to practice core Java concepts, data structures, object-oriented programming, and unit testing.
+- `CarArrayList` — dynamic array implementation.
+- `CarLinkedList` — doubly linked list implementation.
+- `CarHashSet` — hash table implementation with separate chaining.
 
-## Implemented Structures
+## Interface Hierarchy
 
-- `CarList` — a common list interface
-- `CarArrayList` — an array-based dynamic list
-- `CarLinkedList` — a doubly linked list
+```text
+CarCollection
+├── CarList
+│   ├── CarArrayList
+│   └── CarLinkedList
+└── CarSet
+    └── CarHashSet
+```
 
 ## Supported Operations
 
+All collections support:
+
 - `add`
-- `add by index`
-- `get`
 - `remove`
-- `removeAt`
+- `contains`
 - `size`
 - `clear`
+
+List implementations also support:
+
+- `get`
+- `add by index`
+- `remove by index`
+
+## Hash Set Features
+
+`CarHashSet`:
+
+- prevents duplicate elements;
+- uses `equals()` and `hashCode()`;
+- handles collisions with separate chaining;
+- automatically increases its internal capacity.
 
 ## Technologies
 
@@ -30,5 +52,39 @@ This project was created to practice core Java concepts, data structures, object
 
 ## Running Tests
 
+Run the tests from the project root:
+
 ```bash
 ./gradlew test
+```
+
+## Project Structure
+
+```text
+src/
+├── main/java/
+│   ├── Car.java
+│   ├── CarCollection.java
+│   ├── CarList.java
+│   ├── CarSet.java
+│   ├── CarArrayList.java
+│   ├── CarLinkedList.java
+│   └── CarHashSet.java
+└── test/java/
+    ├── CarCollectionTest.java
+    ├── CarListTest.java
+    └── CarSetTest.java
+```
+
+## Purpose
+
+This project was created to practice:
+
+- Java Core;
+- object-oriented programming;
+- arrays and linked data structures;
+- hash tables and collision handling;
+- interfaces and inheritance;
+- unit testing.
+
+This is an educational project and not a replacement for the Java Collections Framework.
