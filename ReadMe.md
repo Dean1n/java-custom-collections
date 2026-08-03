@@ -1,62 +1,146 @@
-# Custom Java Collections
+# Java Collections From Scratch
 
-An educational Java project with custom implementations of basic collection data structures.
+A learning project that implements simplified versions of Java collections from scratch.
+
+The project demonstrates how dynamic arrays, linked lists, hash sets, and hash maps work internally without relying on their standard Java implementations for data storage.
 
 ## Implemented Collections
 
-- `CarArrayList` — dynamic array implementation.
-- `CarLinkedList` — doubly linked list implementation.
-- `CarHashSet` — hash table implementation with separate chaining.
+### CarArrayList
+
+A dynamic array implementation.
+
+Supported operations:
+
+- Add an element
+- Insert an element at a specific index
+- Get an element by index
+- Remove an element
+- Remove an element by index
+- Check whether an element exists
+- Clear the collection
+- Iterate using `Iterator<Car>`
+- Automatic capacity expansion
+
+### CarLinkedList
+
+A doubly linked list implementation.
+
+Supported operations:
+
+- Add an element
+- Insert an element at a specific index
+- Get an element by index
+- Remove an element
+- Remove an element by index
+- Check whether an element exists
+- Clear the collection
+- Iterate using `Iterator<Car>`
+
+### CarHashSet
+
+A hash-based collection that stores unique cars.
+
+Supported operations:
+
+- Add a unique element
+- Remove an element
+- Check whether an element exists
+- Clear the collection
+- Iterate using `Iterator<Car>`
+- Handle hash collisions using separate chaining
+- Resize and rehash elements when the load factor is exceeded
+
+### CarHashMap
+
+A hash-based key-value collection where `CarOwner` is the key and `Car` is the value.
+
+Supported operations:
+
+- Add or update a key-value pair
+- Find a car by its owner
+- Remove an entry by key
+- Get all keys
+- Get all values
+- Clear the map
+- Handle hash collisions using separate chaining
+- Resize and rehash entries when the load factor is exceeded
 
 ## Interface Hierarchy
 
 ```text
-CarCollection
+CarCollection extends Iterable<Car>
 ├── CarList
 │   ├── CarArrayList
 │   └── CarLinkedList
 └── CarSet
     └── CarHashSet
+
+CarMap
+└── CarHashMap
 ```
 
-## Supported Operations
+## Data Models
 
-All collections support:
+### Car
 
-- `add`
-- `remove`
-- `contains`
-- `size`
-- `clear`
+Represents a car and is used as an element in the custom collections.
 
-List implementations also support:
+Its `equals()` and `hashCode()` methods allow cars to be compared and stored correctly in `CarHashSet`.
 
-- `get`
-- `add by index`
-- `remove by index`
+### CarOwner
 
-## Hash Set Features
+Represents a car owner and is used as a key in `CarHashMap`.
 
-`CarHashSet`:
+The key contains:
 
-- prevents duplicate elements;
-- uses `equals()` and `hashCode()`;
-- handles collisions with separate chaining;
-- automatically increases its internal capacity.
+- ID
+- First name
+- Last name
+
+Its `equals()` and `hashCode()` methods are used to find the correct map entry.
+
+## Hash Table Implementation
+
+Both `CarHashSet` and `CarHashMap` use:
+
+- An initial capacity of 16
+- A load factor of 0.75
+- Separate chaining for collision handling
+- Automatic table expansion
+- Rehashing after expansion
+
+Average expected complexity for `add`, `put`, `get`, `contains`, and `remove` is `O(1)`. In the worst case, when many keys have the same hash, these operations may take `O(n)`.
+
+## Testing
+
+The project uses JUnit 5.
+
+Tests cover:
+
+- Adding and removing elements
+- Collection size
+- Duplicate handling
+- Indexed operations
+- Iteration
+- Hash table resizing
+- Updating an existing map entry
+- Retrieving values by key
+- Getting map keys and values
+- Clearing collections
+
+Run all tests with:
+
+```bash
+./gradlew test
+```
 
 ## Technologies
 
 - Java
 - Gradle
 - JUnit 5
-
-## Running Tests
-
-Run the tests from the project root:
-
-```bash
-./gradlew test
-```
+- IntelliJ IDEA
 
 ## Project Structure
 
@@ -64,27 +148,33 @@ Run the tests from the project root:
 src/
 ├── main/java/
 │   ├── Car.java
+│   ├── CarOwner.java
 │   ├── CarCollection.java
 │   ├── CarList.java
 │   ├── CarSet.java
+│   ├── CarMap.java
 │   ├── CarArrayList.java
 │   ├── CarLinkedList.java
-│   └── CarHashSet.java
+│   ├── CarHashSet.java
+│   └── CarHashMap.java
 └── test/java/
     ├── CarCollectionTest.java
     ├── CarListTest.java
-    └── CarSetTest.java
+    ├── CarSetTest.java
+    └── CarMapTest.java
 ```
 
 ## Purpose
 
-This project was created to practice:
+This project was created to practise:
 
-- Java Core;
-- object-oriented programming;
-- arrays and linked data structures;
-- hash tables and collision handling;
-- interfaces and inheritance;
-- unit testing.
-
-This is an educational project and not a replacement for the Java Collections Framework.
+- Object-oriented programming
+- Interfaces and implementations
+- Generics and iterators
+- Dynamic arrays
+- Doubly linked lists
+- Hash tables
+- Collision handling
+- `equals()` and `hashCode()`
+- Unit testing
+- Algorithm complexity analysis
