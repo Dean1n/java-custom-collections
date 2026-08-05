@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class CarLinkedList implements CarList{
+public class CarLinkedList implements CarList, CarQueue{
     private Node first;
     private Node last;
     private int size=0;
@@ -140,5 +140,17 @@ public class CarLinkedList implements CarList{
                 return car;
             }
         };
+    }
+
+    @Override
+    public Car peek() {
+        return size>0 ? get(0) : null;
+    }
+
+    @Override
+    public Car pool() {
+        Car car =get(0);
+        removeAt(0);
+        return car;
     }
 }

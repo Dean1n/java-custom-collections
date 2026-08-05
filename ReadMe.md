@@ -156,12 +156,15 @@ src/
 │   ├── CarArrayList.java
 │   ├── CarLinkedList.java
 │   ├── CarHashSet.java
-│   └── CarHashMap.java
+│   ├── CarHashMap.java
+│   └── CarQueueMap.java
 └── test/java/
     ├── CarCollectionTest.java
     ├── CarListTest.java
     ├── CarSetTest.java
-    └── CarMapTest.java
+    ├── CarMapTest.java
+    └── CarQueueTest.java
+    
 ```
 
 ## Purpose
