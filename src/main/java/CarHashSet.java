@@ -1,159 +1,45 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-public class CarHashSet implements CarSet {
-    private static final int INITIAL_CAPACITY = 16;
-    private final double LOAD_FACTOR = 0.75;
-    private Entry[] array = new Entry[INITIAL_CAPACITY];
-    private int size = 0;
+public class CarHashSet<T> implements CarSet<T> {
 
-    private static class Entry {
-        private Car value;
-        private Entry next;
+    private Map<T, Object> map = new HashMap<>();
+    private Object object = new Object();
 
-        public Entry(Car value, Entry next) {
-            this.value = value;
-            this.next = next;
+    @Override
+    public boolean add(T car) {
+        if (map.containsKey(car)) {
+            return false;
         }
-    }
-
-    private int getelementposition(Car car, int arraylenth) {
-        return Math.abs(car.hashCode() % arraylenth);
+        map.put(car, object);
+        return true;
     }
 
     @Override
-    public boolean remove(Car car) {
-        int pos = getelementposition(car, array.length);
-        if (array[pos] == null) {
-            return false;
-        }
-        Entry secondlast = array[pos];
-        Entry last = secondlast.next;
+    public boolean remove(T car) {
+        Object removed = map.remove(car);
+        return removed != null;
+    }
 
-        if (secondlast.value.equals(car)) {
-            array[pos] = last;
-            size--;
-            return true;
-        }
-        while (last != null) {
-            if (last.value.equals(car)) {
-                secondlast.next = last.next;
-                size--;
-                return true;
-            } else {
-                secondlast = last;
-                last = last.next;
-            }
-        }
-        return false;
+    @Override
+    public boolean contains(T car) {
+        return map.containsKey(car);
     }
 
     @Override
     public int size() {
-        return size;
+        return map.size();
     }
 
     @Override
     public void clear() {
-        array = new Entry[INITIAL_CAPACITY];
-        size = 0;
+        map.clear();
     }
 
     @Override
-    public boolean add(Car car) {
-        if (size >= array.length * LOAD_FACTOR) {
-            increaseArray();
-        }
-        boolean added = add(car, array);
-        if (added) {
-            size++;
-        }
-        return added;
-    }
-
-    private boolean add(Car car, Entry[] dst) {
-        int pos = getelementposition(car, dst.length);
-
-        if (dst[pos] == null) {
-            Entry entry = new Entry(car, null);
-            dst[pos] = entry;
-            return true;
-        } else {
-            Entry existedElement = dst[pos];
-            while (true) {
-                if (existedElement.value.equals(car)) {
-                    return false;
-                } else if (existedElement.next == null) {
-                    existedElement.next = new Entry(car, null);
-                    return true;
-                } else {
-                    existedElement = existedElement.next;
-                }
-            }
-        }
-    }
-
-    private void increaseArray() {
-        Entry[] newArray = new Entry[array.length * 2];
-        for (Entry entry : array) {
-            Entry existedElement = entry;
-            while (existedElement != null) {
-                add(existedElement.value, newArray);
-                existedElement = existedElement.next;
-            }
-        }
-        array = newArray;
-    }
-
-    @Override
-    public boolean contains(Car car) {
-        int pos = getelementposition(car, array.length);
-        if (array[pos] == null) {
-            return false;
-        }
-        Entry last = array[pos];
-
-        if (last.value.equals(car)) {
-            return true;
-        }
-        while (last != null) {
-            if (last.value.equals(car)) {
-                return true;
-            } else {
-                last = last.next;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public Iterator<Car> iterator() {
-        return new Iterator<Car>() {
-            int index = 0;
-            int arrayindex = 0;
-            Entry entry;
-
-            @Override
-            public boolean hasNext() {
-                return index < size;
-            }
-
-            @Override
-            public Car next() {
-                while (array[arrayindex] == null) {
-                    arrayindex++;
-                }
-                if (entry == null) {
-                    entry = array[arrayindex];
-                }
-                Car result = entry.value;
-                entry = entry.next;
-                if (entry == null) {
-                    arrayindex++;
-                }
-                index++;
-                return result;
-            }
-        };
+    public Iterator<T> iterator() {
+        return map.keySet().iterator();
     }
 }

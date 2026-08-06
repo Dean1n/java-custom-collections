@@ -1,19 +1,16 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class CarHashMap implements CarMap{
+public class CarHashMap<K,V> implements CarMap<K,V>{
     private static final int INITIAL_CAPACITY=16;
     private static final double LOAD_FACTOR=0.75;
-    private Entry[] entries = new Entry[INITIAL_CAPACITY];
+    private Object[] entries = new Object[INITIAL_CAPACITY];
     private int size=0;
-    private static class Entry{
-        private CarOwner key;
-        private Car value;
+    private class Entry{
+        private K key;
+        private V value;
         Entry next;
 
-        public Entry(CarOwner carOwner, Car car, Entry next) {
+        public Entry(K carOwner, V car, Entry next) {
             this.key = carOwner;
             this.value = car;
             this.next = next;
@@ -21,7 +18,7 @@ public class CarHashMap implements CarMap{
     }
 
     @Override
-    public void put(CarOwner key, Car value) {
+    public void put(K key, V value) {
         if(size>=entries.length*LOAD_FACTOR){
             increaseArray();
         }
@@ -30,9 +27,9 @@ public class CarHashMap implements CarMap{
             size++;
         }
     }
-    private boolean put(CarOwner key,Car value, Entry[] dst){
+    private boolean put(K key,V value, Object[] dst){
         int pos = getElementPosition(key,dst.length);
-        Entry existedElement=dst[pos];
+        Entry existedElement= (Entry) dst[pos];
         if(existedElement==null){
             Entry entry=new Entry(key,value,null);
             dst[pos]=entry;
@@ -52,9 +49,9 @@ public class CarHashMap implements CarMap{
         }
     }
     @Override
-    public Car get(CarOwner key) {
+    public V get(K key) {
         int pos=getElementPosition(key,entries.length);
-        Entry existedElement= entries[pos];
+        Entry existedElement= (Entry) entries[pos];
         while (existedElement!=null){
             if(existedElement.key.equals(key)){
                 return existedElement.value;
@@ -65,10 +62,10 @@ public class CarHashMap implements CarMap{
     }
 
     @Override
-    public Set<CarOwner> keySet() {
-        Set<CarOwner> result = new HashSet<>();
-        for (Entry entry : entries) {
-            Entry existedElement = entry;
+    public Set<K> keySet() {
+        Set<K> result = new HashSet<>();
+        for (Object entry : entries) {
+            Entry existedElement = (Entry) entry;
             while (existedElement != null) {
                 result.add(existedElement.key);
                 existedElement = existedElement.next;
@@ -78,10 +75,10 @@ public class CarHashMap implements CarMap{
     }
 
     @Override
-    public List<Car> values() {
-        List<Car> result = new ArrayList<>();
-        for (Entry entry : entries) {
-            Entry existedElement = entry;
+    public List<V> values() {
+        List<V> result = new ArrayList<>();
+        for (Object entry : entries) {
+            Entry existedElement = (Entry) entry;
             while (existedElement != null) {
                 result.add(existedElement.value);
                 existedElement = existedElement.next;
@@ -91,9 +88,9 @@ public class CarHashMap implements CarMap{
     }
 
     @Override
-    public boolean remove(CarOwner key) {
+    public boolean remove(K key) {
         int pos=getElementPosition(key,entries.length);
-        Entry existedElement= entries[pos];
+        Entry existedElement= (Entry) entries[pos];
         if( existedElement!=null && existedElement.key.equals(key)){
             entries[pos]=existedElement.next;
             size--;
@@ -122,16 +119,16 @@ public class CarHashMap implements CarMap{
 
     @Override
     public void clear() {
-        entries=new Entry[INITIAL_CAPACITY];
+        entries=new Object[INITIAL_CAPACITY];
         size=0;
     }
-    private int getElementPosition(CarOwner carOwner, int arraylenth){
+    private int getElementPosition(K carOwner, int arraylenth){
         return Math.abs(carOwner.hashCode() % arraylenth);
     }
     private void increaseArray(){
-        Entry[] newEntries =new Entry[entries.length*2];
-        for (Entry entry : entries) {
-            Entry existedElement = entry;
+        Object[] newEntries =new Object[entries.length*2];
+        for (Object entry : entries) {
+            Entry existedElement = (Entry) entry;
             while (existedElement != null) {
                 put(existedElement.key,existedElement.value,newEntries);
                 existedElement = existedElement.next;

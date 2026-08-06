@@ -1,5 +1,5 @@
-public interface CarQueue extends CarCollection{
-    boolean add(Car car);
-    Car peek();
-    Car pool();
+public interface CarQueue<T> extends CarCollection<T>{
+    boolean add(T car);
+    T peek();
+    T pool();
 }

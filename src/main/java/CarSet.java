@@ -1,7 +1,9 @@
-public interface CarSet extends CarCollection{
-    boolean add(Car car);
-    boolean remove(Car car);
+public interface CarSet<T> extends CarCollection<T> {
+    boolean add(T car);
+
+    boolean remove(T car);
+
     int size();
+
     void clear();
-    boolean contains(Car car);
 }
